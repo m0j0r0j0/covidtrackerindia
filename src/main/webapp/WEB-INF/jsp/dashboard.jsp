@@ -414,14 +414,19 @@ $(function() {
 								class="btn btn-sm btn-outline-danger">Download Certificate</a>
 						</div>
 					</c:if>
-					<c:if test="${isCountEnable eq 'Y'}">
-						<table>
-							<tr style="font-size: 11px;">
-								<td>Visitor's count : &nbsp;</td>
-								<td><div id="visits"></div></td>
-							</tr>
-						</table>
-					</c:if>
+				<div class="buttons">
+					<a href="http://selfregistration.cowin.gov.in"
+						class="btn btn-sm btn-outline-danger" target="_blank">
+						&nbsp;Click here to book appoinment&nbsp; </a>
+				</div>
+				<c:if test="${isCountEnable eq 'Y'}">
+					<table>
+						<tr style="font-size: 11px;">
+							<td>Visitor's count : &nbsp;</td>
+							<td><div id="visits"></div></td>
+						</tr>
+					</table>
+				</c:if>
 
 				</p>
 			</div>
@@ -440,13 +445,8 @@ $(function() {
 											</div> -->
 											<div class="col-md-12">
 												<h6 class="text-muted font-semibold">Last Updated:</h6>
-												<h6 class="font-extrabold mb-0" style="margin-left: 8px;"
+												<h6 class="font-extrabold mb-0"
 													style="color: rgb(72, 79, 119);">${state.date}</h6>
-												<a href="http://selfregistration.cowin.gov.in" style="margin-top: 4px;margin-left: 6px;"
-													class="btn btn-sm btn-outline-danger" target="_blank">
-													Book Appointment
-												</a>
-
 											</div>
 										</div>
 									</div>
