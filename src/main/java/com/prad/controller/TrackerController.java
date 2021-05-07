@@ -1,28 +1,14 @@
 package com.prad.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Blob;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,25 +16,18 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.ws.rs.Produces;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,10 +38,6 @@ import com.prad.dto.District;
 import com.prad.dto.State;
 import com.prad.dto.VaccineCenterDto;
 import com.prad.services.TrackerService;
-
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 @Controller
 @EnableScheduling
@@ -290,11 +265,7 @@ public class TrackerController {
 					
 					if(dto.getVaccine().equalsIgnoreCase("COVISHIELD") && dto.getMin_age_limit().equals("45")) {
 						System.out.println("FOUND: "+dto.getVaccine()+"- Age: "+dto.getMin_age_limit());
-						/*final JFXPanel fxPanel = new JFXPanel();		 
-						String bip = "alarm.mp3";
-						Media hit = new Media(new File(bip).toURI().toString());
-						MediaPlayer mediaPlayer = new MediaPlayer(hit);
-						mediaPlayer.play();  */
+						
 					}else {
 						System.out.println(dto.getVaccine()+"::"+dto.getMin_age_limit());
 					}
