@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -653,5 +657,72 @@ public class TrackerService {
 		
 		return centerList;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String sendOTP(String mobileNo) throws IOException, org.json.simple.parser.ParseException {
+		
+		JSONObject jsonReq=new JSONObject();
+		jsonReq.put("mobile", mobileNo);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		HttpEntity<String> entity = new HttpEntity(jsonReq, headers);
+		
+		String response = restTemplate.exchange("https://cdn-api.co-vin.in/api/v2/auth/public/generateOTP", HttpMethod.POST,entity, String.class).getBody();
+		
+		JSONParser parser=new JSONParser();
+		JSONObject jsonResp = (JSONObject) parser.parse(response);
+		System.out.println("TEST::::"+jsonResp.toJSONString());
+		return jsonResp.get("txnId").toString();
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public String verifyOTP(String otp, String txnId) throws IOException, org.json.simple.parser.ParseException, NoSuchAlgorithmException {
+		
+		JSONObject jsonReq=new JSONObject();
+		jsonReq.put("otp", encrySHA256(otp));
+		jsonReq.put("txnId", txnId);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		HttpEntity<String> entity = new HttpEntity(jsonReq, headers);
+		
+		String response = restTemplate.exchange("https://cdn-api.co-vin.in/api/v2/auth/public/confirmOTP", HttpMethod.POST,entity, String.class).getBody();
+		
+		JSONParser parser=new JSONParser();
+		JSONObject jsonResp = (JSONObject) parser.parse(response);
+		
+		return jsonResp.get("token").toString();
+	}
+	
+	
+	public String encrySHA256(String input) throws NoSuchAlgorithmException {
+		
+		return toHexString(getSHA(input));
+	}
+	
+	public static byte[] getSHA(String input) throws NoSuchAlgorithmException
+    { 
+        MessageDigest md = MessageDigest.getInstance("SHA-256"); 
+  
+        return md.digest(input.getBytes(StandardCharsets.UTF_8)); 
+    }
+    
+    public static String toHexString(byte[] hash)
+    {
+        BigInteger number = new BigInteger(1, hash); 
+        StringBuilder hexString = new StringBuilder(number.toString(16)); 
+  
+        while (hexString.length() < 32) 
+        { 
+            hexString.insert(0, '0'); 
+        } 
+        return hexString.toString(); 
+    }
 	
 }
