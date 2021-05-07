@@ -407,7 +407,7 @@ $(function() {
 					Stay <span class="text-danger"><i class="bi bi-heart"></i></span>
 					Safe&nbsp;&nbsp;-&nbsp;&nbsp; <a
 						href="https://twitter.com/M0j0r0j0">by Prasad Tikkas</a>
-					<c:if test="${localIpAddress ne '/192.168.1.11'}">
+					<c:if test="${localIpAddress eq '/192.168.1.11'}">
 						<div class="buttons">
 							<a href="vaccineDashboard" class="btn btn-sm btn-outline-dark">Vaccine
 								Appointment Availability</a> <a href="certificate"
