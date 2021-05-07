@@ -35,6 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -725,4 +726,17 @@ public class TrackerService {
         return hexString.toString(); 
     }
 	
+    public ResponseEntity<byte[]> downloadCertificate(String token,String beneficiaryId ) {
+    	HttpHeaders headers = new HttpHeaders();
+		headers.set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+		headers.set("Authorization", "Bearer "+token);
+		headers.set("Content-type", "application/pdf");
+		
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		
+		ResponseEntity<byte[]> response = restTemplate.exchange("https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id="+beneficiaryId+"", HttpMethod.GET, entity, byte[].class);
+
+        return response;
+    }
+    
 }
