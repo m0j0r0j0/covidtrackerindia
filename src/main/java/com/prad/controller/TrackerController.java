@@ -279,6 +279,9 @@ public class TrackerController {
 	@GetMapping("/slotfinder/find")
 	public void slotfinder() {
 		try {
+			
+			Date date=new Date();
+			
 			List<VaccineCenterDto> centerListDto = trackerService.searchByDistrict("366");
 			
 			if(centerListDto.size()!=0) {
@@ -286,18 +289,18 @@ public class TrackerController {
 				for(VaccineCenterDto dto : centerListDto) {
 					
 					if(dto.getVaccine().equalsIgnoreCase("COVISHIELD") && dto.getMin_age_limit().equals("45")) {
-						System.out.println("FOUND!!!");
-						final JFXPanel fxPanel = new JFXPanel();		 
+						System.out.println("FOUND: "+dto.getVaccine()+"- Age: "+dto.getMin_age_limit());
+						/*final JFXPanel fxPanel = new JFXPanel();		 
 						String bip = "alarm.mp3";
 						Media hit = new Media(new File(bip).toURI().toString());
 						MediaPlayer mediaPlayer = new MediaPlayer(hit);
-						mediaPlayer.play();  
+						mediaPlayer.play();  */
 					}else {
 						System.out.println(dto.getVaccine()+"::"+dto.getMin_age_limit());
 					}
 				}
 			}else {
-		        System.out.println("Slot not Found");
+		        System.out.println("NOT : "+date);
 			}
 			
 		} catch (Exception e) {

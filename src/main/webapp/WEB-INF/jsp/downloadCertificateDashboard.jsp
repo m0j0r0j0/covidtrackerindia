@@ -85,17 +85,21 @@
 <script type="text/javascript">
 	function getOTP() {
 		var mobileNo = document.getElementById("mobileNo").value;
-		$.ajax({
-			type : 'GET',
-			url : 'http://localhost:8080/sendOTP',
-			data : {'mobileNo' : mobileNo},
-			success : function(result) {
-				document.getElementById("txnId").value = result;
-			},
-		    error: function (request, status, error) {
-		        alert("Error! Please try after sometime."); //request.responseText
-		    }
-		});
+		if(mobileNo.trim()!=''){
+			$.ajax({
+				type : 'GET',
+				url : 'http://localhost:8080/sendOTP',
+				data : {'mobileNo' : mobileNo},
+				success : function(result) {
+					document.getElementById("txnId").value = result;
+				},
+			    error: function (request, status, error) {
+			        alert("Error! Please try after sometime."); //request.responseText
+			    }
+			});
+		}else{
+			alert("Please enter Mobile Number");
+		}
 	}
 </script>
 <body style="background-color: #e6e8f4;">
@@ -147,7 +151,7 @@
 						href="https://twitter.com/M0j0r0j0">by Prasad Tikkas</a>
 				</p>
 				<div class="buttons">
-					<a href="/" class="btn btn-sm btn-warning">Back</a>
+					<a href="/" class="btn btn-sm btn-outline-dark">Back</a>
 				</div>
 			</div>
 			<div class="page-content">
@@ -183,7 +187,7 @@
 																				<label>Mobile Number</label>
 																			</div>
 																			<div class="col-md-4 form-group">
-																				<input type="text" id="mobileNo" name="mobileNo"
+																				<input type="number" id="mobileNo" name="mobileNo" maxlength="10"
 																					class="form-control" placeholder="Enter Mobile No."
 																					value="">
 																			</div>

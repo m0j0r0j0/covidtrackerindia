@@ -54,7 +54,6 @@
 #pageloader {
 	background: rgba(255, 255, 255, 0.8);
 	visibility: hidden;
-	
 	height: 100%;
 	position: fixed;
 	width: 100%;
@@ -141,7 +140,7 @@ function getDistrict(){
 <body style="background-color: #e6e8f4;">
 
 	<div id="pageloader">
-		<p style="color: black;font-size: 30px;">Please Wait...</p>
+		<p style="color: black; font-size: 30px;">Please Wait...</p>
 		<!-- <img
 			src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif"
 			alt="processing..." /> -->
@@ -187,7 +186,10 @@ function getDistrict(){
 						href="https://twitter.com/M0j0r0j0">by Prasad Tikkas</a>
 				</p>
 				<div class="buttons">
-					<a href="/" class="btn btn-sm btn-warning">Back</a>
+					<a href="/" class="btn btn-sm btn-outline-dark">Back</a> <a
+						href="https://selfregistration.cowin.gov.in" target="_blank"
+						class="btn btn-sm btn-outline-danger"> Click here for Booking
+					</a>
 				</div>
 			</div>
 			<div class="page-content">
@@ -220,11 +222,11 @@ function getDistrict(){
 											<div class="row match-height">
 												<div class="col-md-6 col-12">
 													<div class="card">
-														<div class="card-header">
+														<!-- <div class="card-header">
 															<u><a style="color: red;"
 																href="https://selfregistration.cowin.gov.in"
 																target="_blank">Click here for Booking</a></u>
-														</div>
+														</div> -->
 														<div class="card-content">
 															<div class="card-body">
 																<form class="form form-horizontal" id="createReport"
@@ -325,13 +327,6 @@ function getDistrict(){
 											<div class="row match-height">
 												<div class="col-md-6 col-12">
 													<div class="card">
-														<div class="card-header">
-
-															<u><a style="color: red;"
-																href="https://selfregistration.cowin.gov.in"
-																target="_blank">Click here for Booking</a></u>
-
-														</div>
 														<div class="card-content">
 															<div class="card-body">
 																<form class="form form-horizontal" id="myform"

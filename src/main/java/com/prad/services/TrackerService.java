@@ -601,61 +601,66 @@ public class TrackerService {
 		List<VaccineCenterDto> centerList=new LinkedList<VaccineCenterDto>();
 		
 		
+		Date dt = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		c.add(Calendar.DATE, 0);
+		dt = c.getTime();
 		
-		for(int j=0;j<7;j++) {
-			Date dt = new Date();
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(dt); 
-			c.add(Calendar.DATE, j);
-			dt = c.getTime();
-			
+	
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String vaccineDate= formatter.format(dt);
 		
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-			String vaccineDate= formatter.format(dt);
-			
-			
-			try {
-				HttpHeaders headers = new HttpHeaders();
-				headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				headers.set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
-				HttpEntity<String> entity = new HttpEntity<String>(headers);
+		
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+			HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-				response = restTemplate.exchange("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+districtId+"&date="+vaccineDate+"", HttpMethod.GET,
-						entity, String.class).getBody();
-			 	//response = restTemplate.getForObject("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+districtId+"&date="+vaccineDate+"", String.class);
-
-			 	JSONParser parser = new JSONParser();
-				JSONObject json = (JSONObject) parser.parse(response);
-				JSONArray jarray = (JSONArray) json.get("sessions");
+			String url_2="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict";
+			
+			response = restTemplate.exchange(url_2+"?district_id="+districtId+"&date="+vaccineDate+"", HttpMethod.GET,
+					entity, String.class).getBody();
+		 	
+		 	JSONParser parser = new JSONParser();
+			JSONObject json = (JSONObject) parser.parse(response);
+			JSONArray jarray = (JSONArray) json.get("centers");
+			
+			for(int i=0;i<jarray.size();i++) {
+				JSONObject jobj2 = (JSONObject) jarray.get(i);
 				
-				if(jarray.isEmpty()) {
-					continue;
-				}
+				JSONArray jarray2 = (JSONArray) jobj2.get("sessions");
 				
-				for(int i=0;i<jarray.size();i++) {
-					JSONObject jobj = (JSONObject) jarray.get(i);
+				for(int j=0;j<jarray2.size();j++) {
+					
+					JSONObject jobj = (JSONObject) jarray2.get(j);
+					
+					int capacity=Integer.parseInt(jobj.get("available_capacity").toString());
+					
+					if(capacity<=0) {
+						continue;
+					}
 					
 					VaccineCenterDto dto=new VaccineCenterDto();
 					dto.setAvailable_capacity(jobj.get("available_capacity").toString());
-					dto.setFee_type(jobj.get("fee_type").toString());
+					dto.setFee_type(jobj2.get("fee_type").toString());
 					dto.setDate(jobj.get("date").toString());
 					dto.setVaccine(jobj.get("vaccine").toString());
 					dto.setSlots(Arrays.asList(jobj.get("slots").toString()));
-					dto.setName(jobj.get("name").toString());
+					dto.setName(jobj2.get("name").toString());
 					dto.setMin_age_limit(jobj.get("min_age_limit").toString());
-					dto.setPincode(jobj.get("pincode").toString());
-					
+					dto.setPincode(jobj2.get("pincode").toString());
 					centerList.add(dto);
 				}
-				
-			 	
-	        } catch (Exception e) {
-	            System.out.println("Exception in searchByDistrict method:- " + e);
-	        }
-		}
-		
-		
-		
+			}
+			
+		 	
+        } catch (Exception e) {
+        	e.printStackTrace();
+            System.out.println("Exception in searchByDistrict method:- " + e);
+        }
+
 		return centerList;
 	}
 	
