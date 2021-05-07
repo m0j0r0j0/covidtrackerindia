@@ -279,7 +279,7 @@ public class TrackerController {
 	    HttpHeaders header = new HttpHeaders();
 	    header.setContentType(MediaType.APPLICATION_PDF);
 	    header.set(HttpHeaders.CONTENT_DISPOSITION,
-	                   "attachment; filename=ppp.pdf");
+	                   "attachment; filename="+beneficiaryId+".pdf");
 	    header.setContentLength(response2.getBody().length);
 	    
 	    return new HttpEntity<byte[]>(response2.getBody(), header);
