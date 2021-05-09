@@ -38,6 +38,10 @@ import com.prad.dto.District;
 import com.prad.dto.State;
 import com.prad.dto.VaccineCenterDto;
 import com.prad.services.TrackerService;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+
 
 @Controller
 @EnableScheduling
@@ -265,6 +269,18 @@ public class TrackerController {
 					
 					if(dto.getVaccine().equalsIgnoreCase("COVISHIELD") && dto.getMin_age_limit().equals("45")) {
 						System.out.println("FOUND: "+dto.getVaccine()+"- Age: "+dto.getMin_age_limit());
+						
+						final String ACCOUNT_SID = "AC2c957483acd21df57391e2df69f1e252";
+						final String AUTH_TOKEN = "38a74ca2123594afdf1c85b1d3f104df";
+						Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+						
+						String msg=dto.getName()+", "+dto.getPincode()+",\n"+dto.getDate()+",\n"+dto.getAvailable_capacity();
+				        Message message = Message
+				                .creator(new PhoneNumber("+917977738033"), // to
+				                        new PhoneNumber("+15055025341"), // from
+				                        msg)
+				                .create();
+				        System.out.println(""+message.getSid());
 						
 					}else {
 						System.out.println(dto.getVaccine()+"::"+dto.getMin_age_limit());
