@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -136,14 +137,14 @@ public class TrackerService {
 		String strDate = formatter.format(date1);
 
 		State s = new State();
-		s.setActive(map.get("Active"));
+		s.setActive(format(Double.parseDouble(map.get("Active"))));
 		s.setState_code(map.get("State_code").toLowerCase());
 		s.setState(map.get("State"));
 		s.setDate(strDate);
-		s.setConfirmed(map.get("Confirmed"));
-		s.setRecovered(map.get("Recovered"));
-		s.setTodaysRecovered(format.format(new BigDecimal(map.get("Delta_Recovered"))));
-		s.setTodaysConfirmed(format.format(new BigDecimal(map.get("Delta_Confirmed"))));
+		s.setConfirmed(format(Double.parseDouble(map.get("Confirmed"))));
+		s.setRecovered(format(Double.parseDouble(map.get("Recovered"))));
+		s.setTodaysRecovered(format(Double.parseDouble(map.get("Delta_Recovered"))));
+		s.setTodaysConfirmed(format(Double.parseDouble(map.get("Delta_Confirmed"))));
 
 		if (s.getState_code().equalsIgnoreCase("MH")) {
 			s.setId("021");
@@ -743,5 +744,18 @@ public class TrackerService {
 
         return response;
     }
-    
+ 
+    public static String format(double value) {
+	    if(value < 1000) {
+	        return format("###", value);
+	    } else {
+	        double hundreds = value % 1000;
+	        int other = (int) (value / 1000);
+	        return format(",##", other) + ',' + format("000", hundreds);
+	    }
+	}
+	
+	private static String format(String pattern, Object value) {
+	    return new DecimalFormat(pattern).format(value);
+	}
 }

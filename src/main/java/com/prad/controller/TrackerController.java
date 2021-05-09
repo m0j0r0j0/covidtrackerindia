@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -67,11 +68,9 @@ public class TrackerController {
 		for (Object l : stateList) {
 			LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) l;
 			if (map.get("State").equalsIgnoreCase("Total")) {
-				state.setActive(NumberFormat.getNumberInstance(Locale.UK).format(Integer.parseInt(map.get("Active"))));
-				state.setConfirmed(
-						NumberFormat.getNumberInstance(Locale.UK).format(Integer.parseInt(map.get("Confirmed"))));
-				state.setRecovered(
-						NumberFormat.getNumberInstance(Locale.UK).format(Integer.parseInt(map.get("Recovered"))));
+				state.setActive(format(Double.parseDouble(map.get("Active"))));
+				state.setConfirmed(format(Double.parseDouble(map.get("Confirmed"))));
+				state.setRecovered(format(Double.parseDouble(map.get("Recovered"))));
 				state.setDate(map.get("Last_Updated_Time"));
 				break;
 			}
@@ -98,7 +97,7 @@ public class TrackerController {
 		double totalVaccine = trackerService.getVaccineData();
 		double totalVaccinePercentage = (totalVaccine / 1391197718) * 100;
 
-		String totalVaccineString = format.format(new BigDecimal(totalVaccine));
+		String totalVaccineString = format(totalVaccine);//format.format(new BigDecimal(totalVaccine));
 
 		List<District> districtList = trackerService.getDistricWiseDataMap();
 
@@ -295,8 +294,18 @@ public class TrackerController {
 		}
 	}
 	
-	public static void main(String[] args) throws Exception { 
-		
+	public static String format(double value) {
+	    if(value < 1000) {
+	        return format("###", value);
+	    } else {
+	        double hundreds = value % 1000;
+	        int other = (int) (value / 1000);
+	        return format(",##", other) + ',' + format("000", hundreds);
+	    }
+	}
+	
+	private static String format(String pattern, Object value) {
+	    return new DecimalFormat(pattern).format(value);
 	}
 	
 }
