@@ -137,7 +137,7 @@ public class TrackerService {
 		String strDate = formatter.format(date1);
 
 		State s = new State();
-		s.setActive(format(Double.parseDouble(map.get("Active"))));
+		s.setActive(map.get("Active"));
 		s.setState_code(map.get("State_code").toLowerCase());
 		s.setState(map.get("State"));
 		s.setDate(strDate);
