@@ -12,7 +12,7 @@
 	<groupId>com.tracker.</groupId>
 	<artifactId>covidtracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<packaging>war</packaging>
 	<name>covidtracker</name>
 	<description>Project for Covid 19 tracker</description>
 	<properties>
@@ -98,6 +98,18 @@
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.2.23</version>
+		</dependency>
+		
+
 	</dependencies>
 
 	<build>
